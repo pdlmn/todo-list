@@ -1,71 +1,67 @@
-const hasTags = state => {
-  return {
-    addTag(tag) {
-      state.tags.push(tag);
-    },
-    removeTag(removedTag) {
-      state.tags = state.tags.filter(tag => tag !== removedTag);
-    }
+export const todoList = {
+  items: [],
+
+  Todo(name, priority, status, tags, notes, dueDate) {
+    const type = 'todo';
+    const id = this.todos.length + 1;
+    const todo = { name, priority, status, tags, notes, id, dueDate, type };
+    this.items.push(todo);
+    return todo
+  },
+
+  Project(name, priority, status, tags, todos) {
+    const type = 'project';
+    const id = this.todos.length + 1;
+    const project = { name, priority, status, tags, id, todos, type };
+    this.items.push(project);
+    return project
+  },
+
+  removeItem(id) {
+    this.items = this.items.filter(item => item.id !== Number(id));
+  },
+
+  addTag(id, tag) {
+    const index = this.items.findIndex(item => item.id === Number(id));
+    if (index === -1) return
+
+    const item = this.items[index];
+    item.tags.push(tag);
+  },
+
+  removeTag(id, removedTag) {
+    const index = this.items.findIndex(item => item.id === Number(id));
+    if (index === -1) return
+
+    const item = this.items[index]
+    item.tags = item.tags.filter(tag => tag !== removedTag);
+  },
+
+  addNote(id, note) {
+    const index = this.todos.findIndex(item => item.id === Number(id));
+    if (index === -1) return
+
+    const todo = this.todos[index];
+    todo.notes.push(note);
+  },
+
+  removeNote(id, removedNote) {
+    const index = this.todos.findIndex(item => item.id === Number(id));
+    if (index === -1) return
+
+    const todo = this.todos[index];
+    todo.notes = todo.notes.filter(note => note !== removedNote)
+  },
+
+  get todos() {
+    return this.items.filter(item => item.type === 'todo')
+  },
+
+  get projects() {
+    return this.items.filter(item => item.type === 'project')
+  },
+
+  set init(arrOfTodos) {
+    this.todos = arrOfTodos;
   }
 };
-
-const hasNotes = state => {
-  return {
-    addNote(note) {
-      state.note.push(note);
-    },
-    removeNote(removedNote) {
-      state.notes = state.notes.filter(note => note !== removedNote)
-    }
-  }
-};
-
-const hasTodos = state => {
-  return {
-    addTodo(todo) {
-      state.todos.push(todo);
-    },
-    removeTodo(id) {
-      state.todos = state.todos.filter(todo => todo.id !== id);
-    }
-  }
-};
-
-function Todo(name, priority, status, tags, notes, id, dueDate) {
-  const type = 'todo';
-  const state = { name, priority, status, tags, notes, id, dueDate, type };
-  return Object.assign(
-    state,
-    hasTags(state),
-    hasNotes(state)
-  )
-}
-
-function Project(name, priority, status, tags, id, todos) {
-  const type = 'project';
-  const state = { name, priority, status, tags, id, todos, type };
-  return Object.assign(
-    state,
-    hasTags(state),
-    hasTodos(state)
-  )
-}
-
-export const todoList = (function() {
-  const todos = {
-    todos: [],
-
-    generateId() {
-      return this.todos.length + 1;
-    },
-
-    set init(arrOfTodos) {
-      this.todos = [...arrOfTodos]
-    }
-  };
-
-  return Object.assign(
-    todos,
-    hasTodos(todos),
-  )
-})();
