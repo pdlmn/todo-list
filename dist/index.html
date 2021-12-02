@@ -1,10 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title></title>
-<script defer src="main.js"></script><link href="main.css" rel="stylesheet"></head>
-<body>
-  <h1>Todo List</h1>
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <title>Todo List</title>
+    <script defer src="main.js"></script><link href="main.css" rel="stylesheet">
+    <script src="https://code.iconify.design/2/2.1.0/iconify.min.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>~ Todo List</h1>
+    </header>
+
+    <main>
+      <nav id="sidebar">
+        <ul id="projects" class="lists">
+
+          <li id="home" class="list">
+            <div>Home</div>
+            <div class="list-status">
+              <div class="list-status-circle"></div>
+              <div class="list-status-number">3</div>
+            </div>
+          </li>
+
+          <li id="today" class="list">
+            <div>Today</div>
+            <div class="list-status">
+              <div class="list-status-circle today-overdue"></div>
+              <div class="list-status-number">3</div>
+            </div>
+          </li>
+          <li id="completed" class="list">
+            <div>Completed</div>
+          </li>
+        </ul>
+        <button class="lists-button">Create project</button>
+      </nav>
+
+      <div class="todos-wrapper">
+        <h2>Home</h2>
+        <div id="todos">
+
+          <div class="flex-column">
+            <div class="todo priority-m">
+              <div>
+                <input id="todo1" type="checkbox">
+                <label for="todo1">Go for a walk</label>
+              </div>
+              <div class="todo-buttons">
+                <button class="todo-icon"><span class="iconify" data-icon="ic:round-description"></span></button>
+                <button class="todo-icon"><span class="iconify" data-icon="bx:bx-edit"></span></button>
+                <button class="todo-icon"><span class="iconify" data-icon="fluent:delete-24-filled"></span></button>
+              </div>
+            </div>
+
+            <div id="description1" class="details">
+              <div class="details-header">
+                <div>Due date: 2021-10-19</div>
+                <div class="tags">#home #walk</div>
+              </div>
+              <ul>
+                <li>Grab milk on the way home</li>
+                <li>Doggo will be happy</li>
+              </ul>
+              <button class="details-button">+</button>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="buttons-wrapper">
+          <button class="add-todo">
+            Add todo
+          </button>
+          <button class="clear-completed">
+            Clear todos
+          </button>
+        </div>
+      </div>
+
+    </main>
+
+    <div class="modal">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h2>New task</h2>
+          <div class="close-button">✖</div>
+        </div>
+
+        <div class="modal-body">
+          <form class="modal-form">
+            <div class="modal-form-group">
+              <label for="name">Name</label>
+              <input class="modal-input" type="text" id="name">
+            </div>
+
+            <div class="modal-form-group">
+              <label for="due-date">Due date</label>
+              <input class="modal-input"  type="text" id="due-date">
+            </div>
+
+            <div class="modal-form-group">
+              <label for="tags">Tags</label>
+              <input class="modal-input"  type="text" id="tags">
+            </div>
+
+            <div class="modal-form-group">
+              <label for="notes">Notes</label>
+              <input class="modal-input"  type="text" id="notes">
+            </div>
+
+            <div class="modal-form-group">
+              <label for="select">Priority</label>
+              <select class="modal-select" id="select" name="priority">
+                <option value="">--Prority--</option>
+                <option value="h">High</option>
+                <option value="m">Medium</option>
+                <option value="l">Low</option>
+              </select>
+            </div>
+
+            <div class="modal-buttons">
+              <button>Ok</button>
+              <button>Cancel</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+
+    <footer>
+      Made by pdlm &copy 2021
+    </footer>
+  </body>
 </html>

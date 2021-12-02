@@ -1,5 +1,4 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -14,7 +13,7 @@ module.exports = {
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
-    clean: true,
+    // clean: true,
   },
   module: {
     rules: [
@@ -29,10 +28,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      title: 'Custom Template',
-      template: './index.html',
-    }),
     // new CopyPlugin({
       //   patterns: [
         //     { from: './img', to: './img' },
