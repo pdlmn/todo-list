@@ -39,8 +39,7 @@ main {
   list-style: none;
 }
 
-.lists,
-.lists-button {
+.lists {
   padding: 0;
   margin: 0;
   font-weight: bold;
@@ -67,6 +66,16 @@ main {
   background: rgb(200, 200, 210);
 }
 
+.project-icon {
+  background: none;
+  padding: 0;
+  height: 1em;
+  font-size: 1.15em;
+  border: none;
+  cursor: pointer;
+  margin: 0;
+}
+
 .list-status {
   display: flex;
   gap: 0.25ch;
@@ -84,6 +93,10 @@ main {
   background: rgb(154, 126, 11);
 }
 
+.done {
+  background: rgb(11, 126, 154);
+}
+
 .lists-button {
   border: none;
   font-size: 1.25em;
@@ -92,6 +105,34 @@ main {
   font-weight: bold;
   width: 100%;
   text-align: left;
+}
+
+.create-project-input {
+  padding: 1em;
+  border: none;
+  background: rgb(220, 220, 220);
+  box-sizing: border-box;
+  border-bottom: 1px solid rgb(11, 154, 126);
+  font-weight: bold;
+  color: rgb(11, 154, 126);
+  font-size: 1.25em;
+  width: 80%;
+}
+
+.project-input-button {
+  width: 20%;
+  border: none;
+  padding: 0;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgb(11, 154, 126);
+  background: rgb(11, 154, 126);
+  font-weight: bold;
+  font-size: 3ch;
+  color: white;
+}
+
+.create-project-input:focus {
+  outline: none;
 }
 
 .todos-wrapper {
@@ -142,7 +183,8 @@ main {
   align-items: center;
 }
 
-.todo-icon:hover {
+.todo-icon:hover,
+.project-icon:hover {
   color: rgb(11, 154, 126);
   background: none;
 }

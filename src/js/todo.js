@@ -1,3 +1,4 @@
+// CREATES AND EXPORTS OBJECT THAT HANDLES DATA ABOUT PROJECTS AND TODOS
 export const todoList = (() => {
   function _findProjectById(id) {
     const index = todoList.projects.findIndex(project => project.id === Number(id));
@@ -7,9 +8,7 @@ export const todoList = (() => {
   function _findTodoById(id) {
     for (const project of todoList.projects) {
       for (const todo of project.todos) {
-        if (todo.id === id) {
-          return todo
-        }
+        if (todo.id === id) return todo
       }
     }
   }
@@ -77,7 +76,7 @@ export const todoList = (() => {
 
     get todos() {
       let todos = [];
-      for (let project of this.projects) {
+      for (const project of this.projects) {
         todos = todos.concat(project.todos);
       }
       return todos
