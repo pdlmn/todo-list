@@ -74,10 +74,10 @@
         </div>
 
         <div class="buttons-wrapper">
-          <button class="button color-primary">
+          <button id="add-todo" class="button color-primary">
             Add todo
           </button>
-          <button class="button color-warning">
+          <button id="clear-done" class="button color-warning">
             Clear done
           </button>
         </div>
@@ -85,7 +85,7 @@
 
     </main>
 
-    <div class="modal">
+    <div class="invisible modal">
       <div class="modal-content">
 
         <div class="modal-header">
@@ -97,27 +97,27 @@
           <form class="modal-form">
             <div class="modal-form-group">
               <label for="name">Name</label>
-              <input class="modal-input" type="text" id="name">
+              <input class="modal-input" type="text" id="name" placeholder="Go for a walk...">
             </div>
 
             <div class="modal-form-group">
               <label for="due-date">Due date</label>
-              <input class="modal-input"  type="text" id="due-date">
+              <input class="modal-input"  type="date" id="due-date">
             </div>
 
             <div class="modal-form-group">
               <label for="tags">Tags</label>
-              <input class="modal-input"  type="text" id="tags">
+              <input class="modal-input"  type="text" id="tags" placeholder="health walk fun">
             </div>
 
             <div class="modal-form-group">
               <label for="notes">Notes</label>
-              <input class="modal-input"  type="text" id="notes">
+              <textarea class="modal-input"  type="text" id="notes" placeholder="Buy chips on my way home&#10Should probably take my doggo with me&#10Damn it's cold outside"></textarea>
             </div>
 
             <div class="modal-form-group">
-              <label for="select">Priority</label>
-              <select class="modal-select" id="select" name="priority">
+              <label for="priority">Priority</label>
+              <select class="modal-select" id="priority" name="priority">
                 <option value="">--Prority--</option>
                 <option value="h">High</option>
                 <option value="m">Medium</option>
@@ -126,8 +126,8 @@
             </div>
 
             <div class="modal-buttons">
-              <button class="button color-primary">Ok</button>
-              <button class="button color-warning">Cancel</button>
+              <button id="send-todo" class="button color-primary">Ok</button>
+              <button id="cancel-modal" class="button color-warning">Cancel</button>
             </div>
           </form>
         </div>

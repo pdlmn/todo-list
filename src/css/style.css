@@ -264,7 +264,6 @@ button {
 
 /* MODAL STYLING */
 .modal {
-  /* display: none; */
   height: 100%;
   width: 100%;
   position: fixed;
@@ -376,6 +375,10 @@ button {
 
 .color-warning:hover {
   background: rgb(234, 186, 71);
+}
+
+.invisible {
+  display: none;
 }
 
 @media all and (max-width: 540px) {
