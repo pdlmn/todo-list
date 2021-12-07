@@ -113,6 +113,22 @@ function findTodoById(id) {
   }
 }
 
+function findLengthsOfProjects() {
+  const projectsLengths = {}
+  for (const project of todoList.projects) {
+    projectsLengths[project.id] = project.todos.length;
+  }
+  const staticTabsLengths = {
+    homeLength: todoList.todos.length,
+    todayLength: todoList.today.length,
+    completedLength: todoList.completed.length,
+  }
+  return Object.assign(
+    projectsLengths,
+    staticTabsLengths
+  )
+}
+
 eventsHandler.on('homeTabClicked', () => {
   eventsHandler.trigger('homeTabSelected', todoList.todos);
 });
@@ -141,5 +157,6 @@ eventsHandler.on('projectDeleted', id => {
 
 eventsHandler.on('todoInputed', todoData => {
   const todo = todoList.addTodo(todoData);
-  eventsHandler.trigger('todoAdded', todoList);
+  console.log(findLengthsOfProjects());
+  eventsHandler.trigger('todoAdded', findLengthsOfProjects());
 });

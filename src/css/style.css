@@ -63,7 +63,7 @@ main {
 } 
 
 .list:hover {
-  background: rgb(200, 200, 210);
+  background: rgb(230, 230, 230);
 }
 
 .project-icon {
@@ -378,12 +378,11 @@ button {
 }
 
 .active {
-  background: rgb(71, 234, 186);
-  color: black;
+  background: rgb(240, 240, 240);
 }
 
 .active:hover {
-  background: rgb(71, 234, 186);
+  background: rgb(240, 240, 240);
 }
 
 .invisible {

@@ -13,6 +13,7 @@ const projects = document.querySelectorAll('[data-project]');
 (() => {
   eventsHandler.on('projectCreated', createProjectTab);
   eventsHandler.on('projectDeleted', deleteProjectTab);
+  eventsHandler.on('todoAdded', changeStatusNumber)
 
   window.addEventListener('click', destroyInputDivIfClickedOutside);
 
@@ -121,4 +122,16 @@ function selectTab() {
   document.querySelectorAll('.list')
     .forEach(project => project.classList.remove('active'));
   this.classList.add('active');
+}
+
+function changeStatusNumber(lengthObject) {
+  const projects = document.querySelectorAll('[data-project]');
+
+  home.querySelector('.list-status-number').textContent = lengthObject.homeLength;
+  today.querySelector('.list-status-number').textContent = lengthObject.todayLength;
+  completed.querySelector('.list-status-number').textContent = lengthObject.completedLength;
+
+  projects.forEach(project => {
+    project.querySelector('.list-status-number').textContent = lengthObject[project.dataset.project];
+  });
 }
