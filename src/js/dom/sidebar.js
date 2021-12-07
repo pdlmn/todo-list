@@ -1,15 +1,44 @@
 import { eventsHandler } from "../eventsHandler.js"
 
 const sidebar = document.querySelector('#sidebar');
-const projects = document.querySelector('#projects');
+const projectsList = document.querySelector('#projects');
 const createProjectButton = document.querySelector('#create-project');
 
-eventsHandler.on('projectCreated', createProjectTab);
-eventsHandler.on('projectDeleted', deleteProjectTab);
+const projectTabs = document.querySelectorAll('.list');
+const home = document.querySelector('#home');
+const today = document.querySelector('#today');
+const completed = document.querySelector('#completed');
+const projects = document.querySelectorAll('[data-project]');
 
 (() => {
+  eventsHandler.on('projectCreated', createProjectTab);
+  eventsHandler.on('projectDeleted', deleteProjectTab);
+
   window.addEventListener('click', destroyInputDivIfClickedOutside);
+
   createProjectButton.addEventListener('click', createProjectInput);
+
+  projectTabs.forEach(project => {
+    project.addEventListener('click', selectTab);
+  })
+
+  home.addEventListener('click', () => {
+    eventsHandler.trigger('homeTabClicked');
+  });
+
+  today.addEventListener('click', () => {
+    eventsHandler.trigger('todayTabClicked');
+  });
+
+  completed.addEventListener('click', () => {
+    eventsHandler.trigger('completedTabClicked');
+  });
+
+  projects.forEach(project => {
+    project.addEventListener('click', project => {
+      eventsHandler.trigger('projectTabClicked', this.dataset.project);
+    });
+  });
 })();
 
 
@@ -35,6 +64,7 @@ function createProjectTab(project) {
   nameDiv.textContent = project.name;
   statusNumberDiv.textContent = project.todos.length;
 
+  liWrapper.addEventListener('click', selectTab);
   deleteButton.addEventListener('click', () => { 
     eventsHandler.trigger('projectDeleted', project.id)
   });
@@ -43,7 +73,7 @@ function createProjectTab(project) {
   statusDiv.append(deleteButton, statusCircleDiv, statusNumberDiv);
   liWrapper.append(nameDiv, statusDiv);
 
-  projects.append(liWrapper);
+  projectsList.append(liWrapper);
 
   return liWrapper
 }
@@ -80,9 +110,15 @@ function createProjectInput() {
 
 function destroyInputDivIfClickedOutside(e) {
   if (e.target.parentNode.dataset.type === 'input-div' ||
-    e.target.id === 'create-project') {
+      e.target.id === 'create-project') {
     return
   }
   document.querySelectorAll('[data-type=input-div]')
     .forEach(el => el.remove());
+}
+
+function selectTab() {
+  document.querySelectorAll('.list')
+    .forEach(project => project.classList.remove('active'));
+  this.classList.add('active');
 }

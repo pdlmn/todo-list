@@ -6,3 +6,7 @@ const clearDoneButton = document.querySelector('#clear-done');
 addTodoButton.addEventListener('click', () => {
   eventsHandler.trigger('modalActivated');
 });
+
+function renderTodos() {
+
+}

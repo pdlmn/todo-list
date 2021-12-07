@@ -1,12 +1,20 @@
 import { eventsHandler } from "./eventsHandler"
 
 const todoList = {
-  projects: [],
+  projects: [
+    {
+      todos: [],
+      name: 'default todo list',
+      id: 1
+    }
+  ],
 
-  addTodo(name, priority, tags, notes, dueDate, projectId) {
+  currentProject: 1,
+
+  addTodo({name, dueDate, tags, notes, priority, projectId = 1}) {
     const status = 'pending';
     const id = this.todos.length + 1;
-    const todo =  { name, priority, tags, notes, dueDate, status, id };
+    const todo =  { name, dueDate, tags, notes, priority, status, id, projectId };
     const project = findProjectById(projectId);
     if (!project) return 
     project.todos.push(todo);
@@ -16,7 +24,7 @@ const todoList = {
   addProject(name) {
     const todos = [];
     const id = this.projects.length + 1;
-    const project = { name, todos, todos, id }
+    const project = { name, todos, id }
     this.projects.push(project);
     return project
   },
@@ -58,6 +66,9 @@ const todoList = {
   },
 
   removeProject(id) {
+    // can't remove default project
+    if (Number(id) === 1) return
+
     this.projects = this.projects.filter(project => project.id !== Number(id));
   },
 
@@ -76,6 +87,17 @@ const todoList = {
   get completed() {
     return this.todos.filter(todo => todo.status === 'completed')
   },
+
+  get today() {
+    const today = new Date();
+    return this.todos.filter(todo => {
+      return (
+        todo.dueDate.getDate() === today.getDate() &&
+        todo.dueDate.getMonth() === today.getMonth() &&
+        todo.dueDate.getFullYear() === today.getFullYear()
+      )
+    });
+  }
 }
 
 function findProjectById(id) {
@@ -91,6 +113,23 @@ function findTodoById(id) {
   }
 }
 
+eventsHandler.on('homeTabClicked', () => {
+  eventsHandler.trigger('homeTabSelected', todoList.todos);
+});
+
+eventsHandler.on('todayTabClicked', () => {
+  eventsHandler.trigger('todayTabSelected', todoList.today);
+});
+
+eventsHandler.on('completedTabClicked', () => {
+  eventsHandler.trigger('completedTabSelected', todoList.completed);
+});
+
+eventsHandler.on('projectTabClicked', projectId => {
+  const project = todoList.findProjectById(projectId);
+  eventsHandler.trigger('projectTabSelected', project.todos);
+});
+
 eventsHandler.on('projectInputed', name => {
   const project = todoList.addProject(name);
   eventsHandler.trigger('projectCreated', project);
@@ -98,4 +137,9 @@ eventsHandler.on('projectInputed', name => {
 
 eventsHandler.on('projectDeleted', id => {
   todoList.removeProject(id);
+});
+
+eventsHandler.on('todoInputed', todoData => {
+  const todo = todoList.addTodo(todoData);
+  eventsHandler.trigger('todoAdded', todoList);
 });

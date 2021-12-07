@@ -377,6 +377,15 @@ button {
   background: rgb(234, 186, 71);
 }
 
+.active {
+  background: rgb(71, 234, 186);
+  color: black;
+}
+
+.active:hover {
+  background: rgb(71, 234, 186);
+}
+
 .invisible {
   display: none;
 }
