@@ -142,13 +142,16 @@ eventsHandler.on('completedTabClicked', () => {
 });
 
 eventsHandler.on('projectTabClicked', projectId => {
-  const project = todoList.findProjectById(projectId);
-  eventsHandler.trigger('projectTabSelected', project.todos);
+  const project = findProjectById(projectId);
+  todoList.currentProject = project.id;
+  console.log('CURRENT PROJECT IS:')
+  console.log(project);
+  eventsHandler.trigger('projectTabSelected', project);
 });
 
 eventsHandler.on('projectInputed', name => {
   const project = todoList.addProject(name);
-  eventsHandler.trigger('projectCreated', project);
+  eventsHandler.trigger('projectAdded', project);
 });
 
 eventsHandler.on('projectDeleted', id => {

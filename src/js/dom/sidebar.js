@@ -1,25 +1,25 @@
 import { eventsHandler } from "../eventsHandler.js"
 
-const sidebar = document.querySelector('#sidebar');
 const projectsList = document.querySelector('#projects');
 const createProjectButton = document.querySelector('#create-project');
 
-const projectTabs = document.querySelectorAll('.list');
+const tabs = document.querySelectorAll('.list');
 const home = document.querySelector('#home');
 const today = document.querySelector('#today');
 const completed = document.querySelector('#completed');
 const projects = document.querySelectorAll('[data-project]');
 
 (() => {
-  eventsHandler.on('projectCreated', createProjectTab);
-  eventsHandler.on('projectDeleted', deleteProjectTab);
-  eventsHandler.on('todoAdded', changeStatusNumber)
-
   window.addEventListener('click', destroyInputDivIfClickedOutside);
-
   createProjectButton.addEventListener('click', createProjectInput);
 
-  projectTabs.forEach(project => {
+  eventsHandler.on('projectAdded', createProjectTab);
+  eventsHandler.on('projectAdded', project => console.log(`THIS PROJECT IS ${project}`));
+  eventsHandler.on('projectDeleted', deleteProjectTab);
+  eventsHandler.on('todoAdded', changeStatusNumber)
+  eventsHandler.on('todoDeleted', changeStatusNumber)
+
+  tabs.forEach(project => {
     project.addEventListener('click', selectTab);
   })
 
@@ -33,12 +33,6 @@ const projects = document.querySelectorAll('[data-project]');
 
   completed.addEventListener('click', () => {
     eventsHandler.trigger('completedTabClicked');
-  });
-
-  projects.forEach(project => {
-    project.addEventListener('click', project => {
-      eventsHandler.trigger('projectTabClicked', this.dataset.project);
-    });
   });
 })();
 
@@ -66,6 +60,9 @@ function createProjectTab(project) {
   statusNumberDiv.textContent = project.todos.length;
 
   liWrapper.addEventListener('click', selectTab);
+  liWrapper.addEventListener('click', project => {
+    eventsHandler.trigger('projectTabClicked', liWrapper.dataset.project);
+  });
   deleteButton.addEventListener('click', () => { 
     eventsHandler.trigger('projectDeleted', project.id)
   });
