@@ -148,6 +148,12 @@ main {
 }
 
 /* TODO STYLING */
+#todos {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
 .todo,
 .todo > div {
   display: flex;
@@ -195,8 +201,18 @@ main {
   color: gray;
 }
 
+.priority-l {
+  border-left: 4px solid rgb(11, 154, 126);
+  padding: 8px 5px;
+}
+
 .priority-m {
   border-left: 4px solid rgb(250, 250, 20);
+  padding: 8px 5px;
+}
+
+.priority-h {
+  border-left: 4px solid rgb(250, 20, 20);
   padding: 8px 5px;
 }
 

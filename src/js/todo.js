@@ -160,6 +160,6 @@ eventsHandler.on('projectDeleted', id => {
 
 eventsHandler.on('todoInputed', todoData => {
   const todo = todoList.addTodo(todoData);
-  console.log(findLengthsOfProjects());
-  eventsHandler.trigger('todoAdded', findLengthsOfProjects());
+  console.log(findLengthsOfProjects(), todo);
+  eventsHandler.trigger('todoAdded', {...findLengthsOfProjects(), todo});
 });
