@@ -32,14 +32,10 @@ addTodoButton.addEventListener('click', () => {
   eventsHandler.trigger('modalActivated');
 });
 
-createTodo({name: 'heh', priority: 'm', id: 2});
-
 function createTodo(todo) {
   const todoWrapper = document.createElement('div');
 
-
-  console.log(createTodoLine(todo));
-  todoWrapper.append(createTodoLine(todo));
+  todoWrapper.append(createTodoLine(todo), createTodoDetails(todo));
 
   todosList.append(todoWrapper);
 
@@ -55,21 +51,21 @@ function createTodoLine(todo) {
   const label = document.createElement('label');
 
   const buttonsWrapper = document.createElement('div');
-  const descriptionButton = document.createElement('button');
+  const detailsButton = document.createElement('button');
   const editButton = document.createElement('button');
   const deleteButton = document.createElement('button');
-  const descriptionIcon = document.createElement('span');
+  const detailsIcon = document.createElement('span');
   const editIcon = document.createElement('span');
   const deleteIcon = document.createElement('span');
 
   todoLine.classList.add('todo', `priority-${todo.priority}`);
   buttonsWrapper.classList.add('todo-buttons');
-  [descriptionButton, editButton, deleteButton]
+  [detailsButton, editButton, deleteButton]
     .forEach(button => button.classList.add('todo-icon'));
-  [descriptionIcon, editIcon, deleteIcon]
+  [detailsIcon, editIcon, deleteIcon]
     .forEach(icon => icon.classList.add('iconify'));
 
-  descriptionIcon.dataset.icon = "ic:round-description";
+  detailsIcon.dataset.icon = "ic:round-description";
   editIcon.dataset.icon = "bx:bx-edit";
   deleteIcon.dataset.icon = "fluent:delete-24-filled";
 
@@ -80,15 +76,68 @@ function createTodoLine(todo) {
 
   label.textContent = todo.name;
 
-  descriptionButton.append(descriptionIcon);
+  detailsButton.append(detailsIcon);
   editButton.append(editIcon);
   deleteButton.append(deleteIcon);
-  buttonsWrapper.append(descriptionButton, editButton, deleteButton);
+  buttonsWrapper.append(detailsButton, editButton, deleteButton);
 
   checkboxWrapper.append(checkbox, label);
   todoLine.append(checkboxWrapper, buttonsWrapper);
 
   return todoLine
+}
+
+function createTodoDetails(todo) {
+  const detailsWrapper = document.createElement('div');
+  const detailsHeader = document.createElement('div');
+  const dueDateDiv = document.createElement('div');
+  const tagsDiv = document.createElement('div');
+  const notesList = document.createElement('ul');
+
+  detailsWrapper.classList.add('details', 'invisible');
+  detailsHeader.classList.add('details-header');
+  tagsDiv.classList.add('tags');
+
+  dueDateDiv.textContent = `Due date: ${formatDate(todo.dueDate)}`;
+  tagsDiv.textContent = formatTags(todo.tags);
+
+  detailsWrapper.id = `details${todo.id}`;
+
+  notesList.append(...formatNotes(todo.notes));
+  detailsHeader.append(dueDateDiv, tagsDiv);
+  detailsWrapper.append(detailsHeader, notesList);
+
+  return detailsWrapper
+}
+
+function formatDate(date) {
+  const yyyy = date.getFullYear();
+  const mm = date.getMonth();
+  const dd = date.getDate();
+
+  return `${yyyy}-${mm}-${dd}`
+}
+
+function formatTags(tags) {
+  if (!tags[0]) return
+
+  let formattedTags = '';
+  for (let tag of tags) {
+    formattedTags += `#${tag} `
+  }
+  return formattedTags
+}
+
+function formatNotes(notes) {
+  if (!notes[0]) return `No notes`
+
+  const formattedNotes = [];
+  for (let note of notes) {
+    const listItem = document.createElement('li');
+    listItem.textContent = note;
+    formattedNotes.push(listItem);
+  }
+  return formattedNotes
 }
 
 function renderTodos() {
