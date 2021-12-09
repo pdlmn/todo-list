@@ -11,6 +11,10 @@ const todoList = {
 
   currentProject: 1,
 
+  mode: 'addingTodo',
+
+  editedTodo: -1,
+
   addTodo({name, dueDate, tags, notes, priority, projectId = 1}) {
     const status = 'pending';
     const id = this.todos.length + 1;
@@ -144,8 +148,6 @@ eventsHandler.on('completedTabClicked', () => {
 eventsHandler.on('projectTabClicked', projectId => {
   const project = findProjectById(projectId);
   todoList.currentProject = project.id;
-  console.log('CURRENT PROJECT IS:')
-  console.log(project);
   eventsHandler.trigger('projectTabSelected', project);
 });
 
@@ -159,7 +161,25 @@ eventsHandler.on('projectDeleted', id => {
 });
 
 eventsHandler.on('todoInputed', todoData => {
-  const todo = todoList.addTodo(todoData);
-  console.log(findLengthsOfProjects(), todo);
-  eventsHandler.trigger('todoAdded', {...findLengthsOfProjects(), todo});
+  if (todoList.mode === 'editingTodo') {
+    console.log(todoData);
+    const todo = findTodoById(todoList.editedTodo);
+    todo.name = todoData.name;
+    todo.dueDate = todoData.dueDate;
+    todo.tags = todoData.tags;
+    todo.notes = todoData.notes;
+    todo.priority = todoData.priority;
+    console.log({...findLengthsOfProjects(), todo})
+    eventsHandler.trigger('todoEdited', {...findLengthsOfProjects(), todo});
+  }
+  if (todoList.mode === 'addingTodo') {
+    const todo = todoList.addTodo(todoData);
+    eventsHandler.trigger('todoAdded', {...findLengthsOfProjects(), todo});
+  }
+  todoList.mode = 'addingTodo';
+});
+
+eventsHandler.on('editButtonClicked', todo => {
+  todoList.mode = 'editingTodo';
+  todoList.editedTodo = todo.id;
 });

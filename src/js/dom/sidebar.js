@@ -7,7 +7,6 @@ const tabs = document.querySelectorAll('.list');
 const home = document.querySelector('#home');
 const today = document.querySelector('#today');
 const completed = document.querySelector('#completed');
-const projects = document.querySelectorAll('[data-project]');
 
 (() => {
   window.addEventListener('click', destroyInputDivIfClickedOutside);

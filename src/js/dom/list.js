@@ -1,4 +1,5 @@
 import { eventsHandler } from "../eventsHandler.js";
+import { formatDate } from "../utils.js";
 
 
 const todosList = document.querySelector('#todos');
@@ -23,10 +24,15 @@ eventsHandler.on('projectTabSelected', project => {
 });
 
 eventsHandler.on('todoAdded', data => {
-  console.log(`TODO DATA:`);
-  console.log(data.todo);
-  createTodo(data.todo);
-})
+  todosList.append(createTodo(data.todo));
+});
+
+eventsHandler.on('todoEdited', data => {
+  console.log(data);
+  const oldTodo = document.querySelector(`[data-todo="todo${data.todo.id}"]`);
+  const newTodo = createTodo(data.todo);
+  // oldTodo.after(newTodo);
+});
 
 addTodoButton.addEventListener('click', () => {
   eventsHandler.trigger('modalActivated');
@@ -34,12 +40,9 @@ addTodoButton.addEventListener('click', () => {
 
 function createTodo(todo) {
   const todoWrapper = document.createElement('div');
-
   todoWrapper.append(createTodoLine(todo), createTodoDetails(todo));
-
-  todosList.append(todoWrapper);
-
   todoWrapper.classList.add('flex-column');
+  todoWrapper.dataset.todo = `todo${todo.id}`;
 
   return todoWrapper
 }
@@ -68,6 +71,15 @@ function createTodoLine(todo) {
   detailsIcon.dataset.icon = "ic:round-description";
   editIcon.dataset.icon = "bx:bx-edit";
   deleteIcon.dataset.icon = "fluent:delete-24-filled";
+
+  detailsButton.addEventListener('click', () => {
+    document.querySelector(`#details${todo.id}`)
+      .classList.toggle('invisible');
+  });
+
+  editButton.addEventListener('click', () => {
+    eventsHandler.trigger('editButtonClicked', todo);
+  });
 
   checkbox.type = 'checkbox';
   label.htmlFor = `todo${todo.id}`;
@@ -108,14 +120,6 @@ function createTodoDetails(todo) {
   detailsWrapper.append(detailsHeader, notesList);
 
   return detailsWrapper
-}
-
-function formatDate(date) {
-  const yyyy = date.getFullYear();
-  const mm = date.getMonth();
-  const dd = date.getDate();
-
-  return `${yyyy}-${mm}-${dd}`
 }
 
 function formatTags(tags) {

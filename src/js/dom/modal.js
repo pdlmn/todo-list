@@ -1,4 +1,5 @@
 import { eventsHandler } from "../eventsHandler.js";
+import { formatDate } from "../utils.js";
 
 const modal = document.querySelector('.modal');
 const sendTodoButton = document.querySelector('#send-todo');
@@ -12,12 +13,14 @@ const notesInput = document.querySelector('#notes');
 const priorityInput = document.querySelector('#priority');
 
 eventsHandler.on('modalActivated', displayModal);
+eventsHandler.on('editButtonClicked', editTodo);
 modal.addEventListener('click', e => hideModalIfClickedOutside(e));
 closeModalButton.addEventListener('click', hideModal);
 
 sendTodoButton.addEventListener('click', e => {
   e.preventDefault();
   eventsHandler.trigger('todoInputed', gainTodoDataFromForm());
+  // clearInputs();
   hideModal();
 });
 
@@ -48,6 +51,23 @@ function gainTodoDataFromForm() {
   const priority = priorityInput.value;
 
   return { name, dueDate, tags, notes, priority }
+}
+
+function clearInputs() {
+  nameInput.value = '';
+  dueDateInput.value = '';
+  tagsInput.value = '';
+  notesInput.value = '';
+  priorityInput.value = '';
+}
+
+function editTodo(todo) {
+  displayModal();
+  nameInput.value = todo.name;
+  dueDateInput.value = formatDate(todo.dueDate); 
+  tagsInput.value = todo.tags.join(' ');
+  notesInput.value = todo.notes.join('\n');
+  priorityInput.value = todo.priority;
 }
 
 console.log(gainTodoDataFromForm());
