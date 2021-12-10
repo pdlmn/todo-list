@@ -12,10 +12,10 @@ const tagsInput = document.querySelector('#tags');
 const notesInput = document.querySelector('#notes');
 const priorityInput = document.querySelector('#priority');
 
-eventsHandler.on('modalActivated', displayModal);
-eventsHandler.on('editButtonClicked', editTodo);
 modal.addEventListener('click', e => hideModalIfClickedOutside(e));
 closeModalButton.addEventListener('click', hideModal);
+eventsHandler.on('modalActivated', displayModal);
+eventsHandler.on('editButtonClicked', editTodo);
 
 sendTodoButton.addEventListener('click', e => {
   e.preventDefault();

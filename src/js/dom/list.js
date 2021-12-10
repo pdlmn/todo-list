@@ -28,10 +28,12 @@ eventsHandler.on('todoAdded', data => {
 });
 
 eventsHandler.on('todoEdited', data => {
-  console.log(data);
   const oldTodo = document.querySelector(`[data-todo="todo${data.todo.id}"]`);
   const newTodo = createTodo(data.todo);
-  // oldTodo.after(newTodo);
+  keepDescriptionVisibility(oldTodo, newTodo);
+
+  oldTodo.after(newTodo);
+  oldTodo.remove();
 });
 
 addTodoButton.addEventListener('click', () => {
@@ -142,6 +144,12 @@ function formatNotes(notes) {
     formattedNotes.push(listItem);
   }
   return formattedNotes
+}
+
+function keepDescriptionVisibility(oldTodo, newTodo) {
+  const newDescription = newTodo.querySelector('.details');
+  const oldDescription = oldTodo.querySelector('.details');
+  if (!oldDescription.classList.contains('invisible')) newDescription.classList.remove('invisible');
 }
 
 function renderTodos() {

@@ -16,6 +16,7 @@ const completed = document.querySelector('#completed');
   eventsHandler.on('projectAdded', project => console.log(`THIS PROJECT IS ${project}`));
   eventsHandler.on('projectDeleted', deleteProjectTab);
   eventsHandler.on('todoAdded', changeStatusNumber)
+  eventsHandler.on('todoEdited', changeStatusNumber)
   eventsHandler.on('todoDeleted', changeStatusNumber)
 
   tabs.forEach(project => {

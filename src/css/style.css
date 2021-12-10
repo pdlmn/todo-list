@@ -137,6 +137,9 @@ main {
 
 .todos-wrapper {
   flex: 3;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
 }
 
 .todos-wrapper h2 {
@@ -150,6 +153,7 @@ main {
 /* TODO STYLING */
 #todos {
   display: flex;
+  margin-bottom: auto;
   flex-direction: column;
   gap: 1em;
 }
@@ -419,5 +423,4 @@ button {
     width: 70%;
   }
 }
-
 
