@@ -60,13 +60,14 @@ main {
   justify-content: space-between;
   cursor: pointer;
   user-select: none;
+  gap: 1em;
 } 
 
 .list:hover {
   background: rgb(230, 230, 230);
 }
 
-.project-icon {
+.delete-project-button {
   background: none;
   padding: 0;
   height: 1em;
@@ -175,6 +176,12 @@ main {
   height: 1.2em;
 }
 
+.todo-checked {
+  text-decoration: line-through;
+  font-style: italic;
+  color: rgb(80, 80, 80);
+}
+
 .todo-buttons {
   gap: 1em;
   margin-right: 2vw;
@@ -194,7 +201,7 @@ main {
 }
 
 .todo-icon:hover,
-.project-icon:hover {
+.delete-project-button:hover {
   color: rgb(11, 154, 126);
   background: none;
 }
@@ -407,6 +414,15 @@ button {
 
 .invisible {
   display: none;
+}
+
+.no-user-select {
+  user-select: none;
+}
+
+/* PREVENTS SVG'S FROM BEING e.target */
+.iconify {
+  pointer-events: none;
 }
 
 @media all and (max-width: 540px) {

@@ -4,7 +4,7 @@ const projectsList = document.querySelector('#projects');
 const createProjectButton = document.querySelector('#create-project');
 
 const tabs = document.querySelectorAll('.list');
-const home = document.querySelector('#home');
+const pending = document.querySelector('#pending');
 const today = document.querySelector('#today');
 const completed = document.querySelector('#completed');
 
@@ -13,18 +13,16 @@ const completed = document.querySelector('#completed');
   createProjectButton.addEventListener('click', createProjectInput);
 
   eventsHandler.on('projectAdded', createProjectTab);
-  eventsHandler.on('projectAdded', project => console.log(`THIS PROJECT IS ${project}`));
+  eventsHandler.on('projectAdded', project => console.log(`THIS PROJECT IS ${project.name}`));
   eventsHandler.on('projectDeleted', deleteProjectTab);
-  eventsHandler.on('todoAdded', changeStatusNumber)
-  eventsHandler.on('todoEdited', changeStatusNumber)
-  eventsHandler.on('todoDeleted', changeStatusNumber)
+  eventsHandler.on('todosChanged', changeStatusNumber);
 
   tabs.forEach(project => {
     project.addEventListener('click', selectTab);
   })
 
-  home.addEventListener('click', () => {
-    eventsHandler.trigger('homeTabClicked');
+  pending.addEventListener('click', () => {
+    eventsHandler.trigger('pendingTabClicked');
   });
 
   today.addEventListener('click', () => {
@@ -48,7 +46,7 @@ function createProjectTab(project) {
 
   liWrapper.classList.add('list');
   statusDiv.classList.add('list-status');
-  deleteButton.classList.add('project-icon');
+  deleteButton.classList.add('delete-project-button');
   deleteButtonIcon.classList.add('iconify');
   statusCircleDiv.classList.add('list-status-circle');
   statusNumberDiv.classList.add('list-status-number');
@@ -60,7 +58,8 @@ function createProjectTab(project) {
   statusNumberDiv.textContent = project.todos.length;
 
   liWrapper.addEventListener('click', selectTab);
-  liWrapper.addEventListener('click', project => {
+  liWrapper.addEventListener('click', e => {
+    if (e.target.classList.contains('delete-project-button')) return
     eventsHandler.trigger('projectTabClicked', liWrapper.dataset.project);
   });
   deleteButton.addEventListener('click', () => { 
@@ -124,7 +123,7 @@ function selectTab() {
 function changeStatusNumber(lengthObject) {
   const projects = document.querySelectorAll('[data-project]');
 
-  home.querySelector('.list-status-number').textContent = lengthObject.homeLength;
+  pending.querySelector('.list-status-number').textContent = lengthObject.pendingLength;
   today.querySelector('.list-status-number').textContent = lengthObject.todayLength;
   completed.querySelector('.list-status-number').textContent = lengthObject.completedLength;
 

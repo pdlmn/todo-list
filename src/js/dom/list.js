@@ -1,14 +1,13 @@
 import { eventsHandler } from "../eventsHandler.js";
 import { formatDate } from "../utils.js";
 
-
 const todosList = document.querySelector('#todos');
 const addTodoButton = document.querySelector('#add-todo');
 const clearDoneButton = document.querySelector('#clear-done');
 let listH2 = document.querySelector('.todos-wrapper h2');
 
-eventsHandler.on('homeTabSelected', todos => {
-  listH2.textContent = 'Home';
+eventsHandler.on('pendingTabSelected', todos => {
+  listH2.textContent = 'Pending';
 });
 
 eventsHandler.on('todayTabSelected', todos => {
@@ -23,17 +22,21 @@ eventsHandler.on('projectTabSelected', project => {
   listH2.textContent = project.name;
 });
 
-eventsHandler.on('todoAdded', data => {
-  todosList.append(createTodo(data.todo));
+eventsHandler.on('todoAdded', todo => {
+  todosList.append(createTodo(todo));
 });
 
-eventsHandler.on('todoEdited', data => {
-  const oldTodo = document.querySelector(`[data-todo="todo${data.todo.id}"]`);
-  const newTodo = createTodo(data.todo);
+eventsHandler.on('todoEdited', todo => {
+  const oldTodo = document.querySelector(`[data-todo="todo${todo.id}"]`);
+  const newTodo = createTodo(todo);
   keepDescriptionVisibility(oldTodo, newTodo);
 
   oldTodo.after(newTodo);
   oldTodo.remove();
+});
+
+eventsHandler.on('todoDeleted', todo => {
+  document.querySelector(`[data-todo="todo${todo.id}"]`).remove();
 });
 
 addTodoButton.addEventListener('click', () => {
@@ -63,6 +66,11 @@ function createTodoLine(todo) {
   const editIcon = document.createElement('span');
   const deleteIcon = document.createElement('span');
 
+  if (todo.status === 'completed') {
+    checkboxWrapper.classList.add('todo-checked');
+    checkbox.checked = true;
+  }
+  checkboxWrapper.classList.add('no-user-select');
   todoLine.classList.add('todo', `priority-${todo.priority}`);
   buttonsWrapper.classList.add('todo-buttons');
   [detailsButton, editButton, deleteButton]
@@ -74,6 +82,11 @@ function createTodoLine(todo) {
   editIcon.dataset.icon = "bx:bx-edit";
   deleteIcon.dataset.icon = "fluent:delete-24-filled";
 
+  checkbox.addEventListener('change', () => {
+    eventsHandler.trigger('todoToggled', todo.id);
+    checkboxWrapper.classList.toggle('todo-checked');
+  });
+
   detailsButton.addEventListener('click', () => {
     document.querySelector(`#details${todo.id}`)
       .classList.toggle('invisible');
@@ -81,6 +94,10 @@ function createTodoLine(todo) {
 
   editButton.addEventListener('click', () => {
     eventsHandler.trigger('editButtonClicked', todo);
+  });
+
+  deleteButton.addEventListener('click', () => {
+    eventsHandler.trigger('deleteButtonClicked', todo);
   });
 
   checkbox.type = 'checkbox';
