@@ -6,20 +6,34 @@ const addTodoButton = document.querySelector('#add-todo');
 const clearDoneButton = document.querySelector('#clear-done');
 let listH2 = document.querySelector('.todos-wrapper h2');
 
+eventsHandler.on('allTabSelected', todos => {
+  listH2.textContent = 'All';
+  todosList.innerHTML = '';
+  renderTodos(todos);
+});
+
 eventsHandler.on('pendingTabSelected', todos => {
   listH2.textContent = 'Pending';
+  todosList.innerHTML = '';
+  renderTodos(todos);
 });
 
 eventsHandler.on('todayTabSelected', todos => {
   listH2.textContent = 'Today';
+  todosList.innerHTML = '';
+  renderTodos(todos);
 });
 
 eventsHandler.on('completedTabSelected', todos => {
   listH2.textContent = 'Completed';
+  todosList.innerHTML = '';
+  renderTodos(todos);
 });
 
 eventsHandler.on('projectTabSelected', project => {
   listH2.textContent = project.name;
+  todosList.innerHTML = '';
+  renderTodos(project.todos);
 });
 
 eventsHandler.on('todoAdded', todo => {
@@ -41,6 +55,16 @@ eventsHandler.on('todoDeleted', todo => {
 
 addTodoButton.addEventListener('click', () => {
   eventsHandler.trigger('modalActivated');
+});
+
+clearDoneButton.addEventListener('click', () =>{
+  const doneTodosOnScreen = document.querySelectorAll('.todo-checked');
+  const todosIds = [];
+  doneTodosOnScreen.forEach(todo => {
+    todosIds.push(todo.querySelector('input').id.slice(4));
+    todo.parentNode.parentNode.remove();
+  });
+  eventsHandler.trigger('clearDoneClicked', todosIds); 
 });
 
 function createTodo(todo) {
@@ -169,6 +193,9 @@ function keepDescriptionVisibility(oldTodo, newTodo) {
   if (!oldDescription.classList.contains('invisible')) newDescription.classList.remove('invisible');
 }
 
-function renderTodos() {
-
+function renderTodos(todos) {
+  for (let todo of todos) {
+    todosList.append(createTodo(todo));
+  }
 }
+

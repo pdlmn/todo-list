@@ -4,6 +4,7 @@ const projectsList = document.querySelector('#projects');
 const createProjectButton = document.querySelector('#create-project');
 
 const tabs = document.querySelectorAll('.list');
+const all = document.querySelector('#all');
 const pending = document.querySelector('#pending');
 const today = document.querySelector('#today');
 const completed = document.querySelector('#completed');
@@ -20,6 +21,14 @@ const completed = document.querySelector('#completed');
   tabs.forEach(project => {
     project.addEventListener('click', selectTab);
   })
+
+  all.addEventListener('click', () => {
+    eventsHandler.trigger('allTabClicked');
+  })
+
+  pending.addEventListener('click', () => {
+    eventsHandler.trigger('allTabClicked');
+  });
 
   pending.addEventListener('click', () => {
     eventsHandler.trigger('pendingTabClicked');
@@ -48,7 +57,7 @@ function createProjectTab(project) {
   statusDiv.classList.add('list-status');
   deleteButton.classList.add('delete-project-button');
   deleteButtonIcon.classList.add('iconify');
-  statusCircleDiv.classList.add('list-status-circle');
+  statusCircleDiv.classList.add('list-status-circle', 'project');
   statusNumberDiv.classList.add('list-status-number');
 
   liWrapper.dataset.project = project.id;
@@ -123,6 +132,7 @@ function selectTab() {
 function changeStatusNumber(lengthObject) {
   const projects = document.querySelectorAll('[data-project]');
 
+  all.querySelector('.list-status-number').textContent = lengthObject.allLength;
   pending.querySelector('.list-status-number').textContent = lengthObject.pendingLength;
   today.querySelector('.list-status-number').textContent = lengthObject.todayLength;
   completed.querySelector('.list-status-number').textContent = lengthObject.completedLength;

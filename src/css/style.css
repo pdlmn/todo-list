@@ -90,12 +90,20 @@ main {
   background: rgb(11, 154, 126);
 }
 
-.today-overdue {
+.pending {
   background: rgb(154, 126, 11);
+}
+
+.today {
+  background: rgb(254, 86, 51);
 }
 
 .done {
   background: rgb(11, 126, 154);
+}
+
+.project {
+  background: rgb(51, 176, 224);
 }
 
 .lists-button {
