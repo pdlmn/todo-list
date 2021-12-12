@@ -15,10 +15,18 @@
       <nav id="sidebar">
         <ul id="projects" class="lists">
 
+          <li id="all" class="list">
+            <div>All</div>
+            <div class="list-status">
+              <div class="list-status-circle"></div>
+              <div class="list-status-number">0</div>
+            </div>
+          </li>
+
           <li id="pending" class="list">
             <div>Pending</div>
             <div class="list-status">
-              <div class="list-status-circle"></div>
+              <div class="list-status-circle pending"></div>
               <div class="list-status-number">0</div>
             </div>
           </li>
@@ -26,7 +34,7 @@
           <li id="today" class="list">
             <div>Today</div>
             <div class="list-status">
-              <div class="list-status-circle today-overdue"></div>
+              <div class="list-status-circle today"></div>
               <div class="list-status-number">0</div>
             </div>
           </li>
@@ -42,7 +50,8 @@
       </nav>
 
       <div class="todos-wrapper">
-        <h2>Pending</h2>
+        <h2>All</h2>
+
         <div id="todos">
         </div>
 
