@@ -12,22 +12,24 @@ const tagsInput = document.querySelector('#tags');
 const notesInput = document.querySelector('#notes');
 const priorityInput = document.querySelector('#priority');
 
-modal.addEventListener('click', e => hideModalIfClickedOutside(e));
-closeModalButton.addEventListener('click', hideModal);
-eventsHandler.on('modalActivated', displayModal);
-eventsHandler.on('editButtonClicked', editTodo);
+(() => {
+  modal.addEventListener('click', e => hideModalIfClickedOutside(e));
+  closeModalButton.addEventListener('click', hideModal);
+  eventsHandler.on('modalActivated', displayModal);
+  eventsHandler.on('editButtonClicked', editTodo);
 
-sendTodoButton.addEventListener('click', e => {
-  e.preventDefault();
-  eventsHandler.trigger('todoInputed', gainTodoDataFromForm());
-  // clearInputs();
-  hideModal();
-});
+  sendTodoButton.addEventListener('click', e => {
+    e.preventDefault();
+    eventsHandler.trigger('todoInputed', gainTodoDataFromForm());
+    // clearInputs();
+    hideModal();
+  });
 
-cancelModalButton.addEventListener('click', e => {
-  e.preventDefault();
-  hideModal();
-});
+  cancelModalButton.addEventListener('click', e => {
+    e.preventDefault();
+    hideModal();
+  });
+})();
 
 function displayModal() {
   modal.classList.remove('invisible');

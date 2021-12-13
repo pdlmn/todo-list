@@ -6,66 +6,68 @@ const addTodoButton = document.querySelector('#add-todo');
 const clearDoneButton = document.querySelector('#clear-done');
 let listH2 = document.querySelector('.todos-wrapper h2');
 
-eventsHandler.on('allTabSelected', todos => {
-  listH2.textContent = 'All';
-  todosList.innerHTML = '';
-  renderTodos(todos);
-});
-
-eventsHandler.on('pendingTabSelected', todos => {
-  listH2.textContent = 'Pending';
-  todosList.innerHTML = '';
-  renderTodos(todos);
-});
-
-eventsHandler.on('todayTabSelected', todos => {
-  listH2.textContent = 'Today';
-  todosList.innerHTML = '';
-  renderTodos(todos);
-});
-
-eventsHandler.on('completedTabSelected', todos => {
-  listH2.textContent = 'Completed';
-  todosList.innerHTML = '';
-  renderTodos(todos);
-});
-
-eventsHandler.on('projectTabSelected', project => {
-  listH2.textContent = project.name;
-  todosList.innerHTML = '';
-  renderTodos(project.todos);
-});
-
-eventsHandler.on('todoAdded', todo => {
-  todosList.append(createTodo(todo));
-});
-
-eventsHandler.on('todoEdited', todo => {
-  const oldTodo = document.querySelector(`[data-todo="todo${todo.id}"]`);
-  const newTodo = createTodo(todo);
-  keepDescriptionVisibility(oldTodo, newTodo);
-
-  oldTodo.after(newTodo);
-  oldTodo.remove();
-});
-
-eventsHandler.on('todoDeleted', todo => {
-  document.querySelector(`[data-todo="todo${todo.id}"]`).remove();
-});
-
-addTodoButton.addEventListener('click', () => {
-  eventsHandler.trigger('modalActivated');
-});
-
-clearDoneButton.addEventListener('click', () =>{
-  const doneTodosOnScreen = document.querySelectorAll('.todo-checked');
-  const todosIds = [];
-  doneTodosOnScreen.forEach(todo => {
-    todosIds.push(todo.querySelector('input').id.slice(4));
-    todo.parentNode.parentNode.remove();
+(() => {
+  eventsHandler.on('allTabSelected', todos => {
+    listH2.textContent = 'All';
+    todosList.innerHTML = '';
+    renderTodos(todos);
   });
-  eventsHandler.trigger('clearDoneClicked', todosIds); 
-});
+
+  eventsHandler.on('pendingTabSelected', todos => {
+    listH2.textContent = 'Pending';
+    todosList.innerHTML = '';
+    renderTodos(todos);
+  });
+
+  eventsHandler.on('todayTabSelected', todos => {
+    listH2.textContent = 'Today';
+    todosList.innerHTML = '';
+    renderTodos(todos);
+  });
+
+  eventsHandler.on('completedTabSelected', todos => {
+    listH2.textContent = 'Completed';
+    todosList.innerHTML = '';
+    renderTodos(todos);
+  });
+
+  eventsHandler.on('projectTabSelected', project => {
+    listH2.textContent = project.name;
+    todosList.innerHTML = '';
+    renderTodos(project.todos);
+  });
+
+  eventsHandler.on('todoAdded', todo => {
+    todosList.append(createTodo(todo));
+  });
+
+  eventsHandler.on('todoEdited', todo => {
+    const oldTodo = document.querySelector(`[data-todo="todo${todo.id}"]`);
+    const newTodo = createTodo(todo);
+    keepDescriptionVisibility(oldTodo, newTodo);
+
+    oldTodo.after(newTodo);
+    oldTodo.remove();
+  });
+
+  eventsHandler.on('todoDeleted', todo => {
+    document.querySelector(`[data-todo="todo${todo.id}"]`).remove();
+  });
+
+  addTodoButton.addEventListener('click', () => {
+    eventsHandler.trigger('modalActivated');
+  });
+
+  clearDoneButton.addEventListener('click', () =>{
+    const doneTodosOnScreen = document.querySelectorAll('.todo-checked');
+    const todosIds = [];
+    doneTodosOnScreen.forEach(todo => {
+      todosIds.push(todo.querySelector('input').id.slice(4));
+      todo.parentNode.parentNode.remove();
+    });
+    eventsHandler.trigger('clearDoneClicked', todosIds); 
+  });
+})();
 
 function createTodo(todo) {
   const todoWrapper = document.createElement('div');
@@ -126,7 +128,7 @@ function createTodoLine(todo) {
 
   checkbox.type = 'checkbox';
   label.htmlFor = `todo${todo.id}`;
-  
+
   checkbox.id = `todo${todo.id}`;
 
   label.textContent = todo.name;
