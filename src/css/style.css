@@ -220,17 +220,17 @@ main {
   color: gray;
 }
 
-.priority-l {
+.priority-3 {
   border-left: 4px solid rgb(11, 154, 126);
   padding: 8px 5px;
 }
 
-.priority-m {
+.priority-2 {
   border-left: 4px solid rgb(250, 250, 20);
   padding: 8px 5px;
 }
 
-.priority-h {
+.priority-1 {
   border-left: 4px solid rgb(250, 20, 20);
   padding: 8px 5px;
 }

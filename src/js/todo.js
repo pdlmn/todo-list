@@ -17,7 +17,7 @@ const todoList = {
 
   addTodo({name, dueDate, tags, notes, priority, projectId = 1}) {
     const status = 'pending';
-    const id = this.todos.length + 1;
+    const id = giveIdToTodo();
     const todo =  { name, dueDate, tags, notes, priority, status, id, projectId };
     const project = findProjectById(projectId);
     if (!project) return 
@@ -54,8 +54,12 @@ const todoList = {
 
   proj(index) {
     return {
+      get todos() {
+        return sortTodos(findProjectById(index).todos)
+      },
+
       get pending() {
-        return findProjectById(index).todos.filter(todo => todo.status === 'pending');
+        return sortTodos(findProjectById(index).todos.filter(todo => todo.status === 'pending'))
       }
     }
   },
@@ -65,28 +69,35 @@ const todoList = {
     for (const project of this.projects) {
       todos = todos.concat(project.todos);
     }
-    return todos
+    return sortTodos(todos)
   },
 
   get pending() {
-    return this.todos.filter(todo => todo.status === 'pending');
+    return sortTodos(this.todos.filter(todo => todo.status === 'pending'));
   },
 
   get completed() {
-    return this.todos.filter(todo => todo.status === 'completed');
+    return sortTodos(this.todos.filter(todo => todo.status === 'completed'));
   },
 
   get today() {
     const today = new Date();
-    return this.todos.filter(todo => {
+    return sortTodos(this.todos.filter(todo => {
       return (
         todo.dueDate.getDate() === today.getDate() &&
         todo.dueDate.getMonth() === today.getMonth() &&
         todo.dueDate.getFullYear() === today.getFullYear() &&
         todo.status === 'pending'
       )
-    });
+    }));
   }
+}
+
+function giveIdToTodo() {
+  const todosSortedById = [...todoList.todos].sort((todo1, todo2) => todo1.id - todo2.id);
+  const lastTodo = todosSortedById[todosSortedById.length - 1];
+  if (lastTodo) return lastTodo.id + 1
+  return 1
 }
 
 function findProjectById(id) {
@@ -120,26 +131,36 @@ function findLengthsOfProjects() {
   )
 }
 
+function sortTodos(todos) {
+  return [...todos].sort((todo1, todo2) => todo1.dueDate - todo2.dueDate)
+              .sort((todo1, todo2) => todo1.priority - todo2.priority)
+              .sort((todo1, todo2) => todo1.status === 'completed' ? 1 : -1)
+}
+
 eventsHandler.on('allTabClicked', () => {
+  todoList.currentProject = 1;
   eventsHandler.trigger('allTabSelected', todoList.todos);
 });
 
 eventsHandler.on('pendingTabClicked', () => {
+  todoList.currentProject = 1;
   eventsHandler.trigger('pendingTabSelected', todoList.pending);
 });
 
 eventsHandler.on('todayTabClicked', () => {
+  todoList.currentProject = 1;
   eventsHandler.trigger('todayTabSelected', todoList.today);
 });
 
 eventsHandler.on('completedTabClicked', () => {
+  todoList.currentProject = 1;
   eventsHandler.trigger('completedTabSelected', todoList.completed);
 });
 
 eventsHandler.on('projectTabClicked', projectId => {
   const project = findProjectById(projectId);
-  todoList.currentProject = project.id;
-  eventsHandler.trigger('projectTabSelected', findProjectById(project.id));
+  todoList.currentProject = projectId;
+  eventsHandler.trigger('projectTabSelected', {...project, todos: todoList.proj(projectId).todos});
 });
 
 eventsHandler.on('projectInputed', name => {
@@ -186,7 +207,6 @@ eventsHandler.on('editButtonClicked', todo => {
 
 eventsHandler.on('deleteButtonClicked', todo => {
   todoList.removeTodo(todo.id);
-  console.log(todoList.todos);
   eventsHandler.trigger('todoDeleted', todo);
   eventsHandler.trigger('todosChanged', findLengthsOfProjects());
 });
