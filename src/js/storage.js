@@ -7,7 +7,6 @@ import { eventsHandler } from './eventsHandler';
 
   eventsHandler.on('todoListChanged', projects => {
     saveToLocalStorage('projects', projects);
-    console.log(localStorage.getItem('projects'));
   });
 })();
 

@@ -21,7 +21,7 @@ const priorityInput = document.querySelector('#priority');
   sendTodoButton.addEventListener('click', e => {
     e.preventDefault();
     eventsHandler.trigger('todoInputed', gainTodoDataFromForm());
-    // clearInputs();
+    clearInputs();
     hideModal();
   });
 
@@ -72,4 +72,3 @@ function editTodo(todo) {
   priorityInput.value = todo.priority;
 }
 
-console.log(gainTodoDataFromForm());
