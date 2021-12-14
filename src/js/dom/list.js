@@ -38,7 +38,7 @@ let listH2 = document.querySelector('.todos-wrapper h2');
   });
 
   eventsHandler.on('todoAdded', todo => {
-    todosList.append(createTodo(todo));
+    todosList.prepend(createTodo(todo));
   });
 
   eventsHandler.on('todoEdited', todo => {

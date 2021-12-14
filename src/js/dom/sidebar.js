@@ -13,8 +13,13 @@ const completed = document.querySelector('#completed');
   window.addEventListener('click', destroyInputDivIfClickedOutside);
   createProjectButton.addEventListener('click', createProjectInput);
 
+  eventsHandler.on('projectsParsed', projects => {
+    for (let i = 1, l = projects.length; i < l; i++) {
+      createProjectTab(projects[i]);
+    }
+  });
+
   eventsHandler.on('projectAdded', createProjectTab);
-  eventsHandler.on('projectAdded', project => console.log(`THIS PROJECT IS ${project.name}`));
   eventsHandler.on('projectDeleted', deleteProjectTab);
   eventsHandler.on('todosChanged', changeStatusNumber);
 
